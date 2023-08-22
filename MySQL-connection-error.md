@@ -77,7 +77,7 @@ $ ps -aux | grep mysqld_safe
 ```
 
 #### Step 13: mysql 에러 로그 파일을 열어서 mysql 데몬이 자동 종료된 원인 분석
-`
+```
 $ vim /var/log/mysql/error.log
 # 에러 확인: [Server] unknown variable 'log-syslog=1'.
 ```
@@ -85,7 +85,7 @@ $ vim /var/log/mysql/error.log
 #### Step 14: mysql 안전모드 데몬 용도의 MySQL 설정파일에서 log-syslog 관련부분 제거
 ```
 $ vim /etc/mysql/mysql.conf.d/mysqld_safe_syslog.cnf
-#   --- syslog (이 부분 comment out하기)
+#  > syslog (이 부분 comment out하기)
 ```
 
 #### Step 15: MySQL 설정이 바뀌었으므로 mysql 안전모드 데몬을 재실행
