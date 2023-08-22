@@ -2,12 +2,12 @@
 # MySQL Error Troubleshooting
 
 
-### <u>문제 증상</u>
+### <U>문제 증상</U>
 - **명령어:** `sudo mysql`
 - **에러메시지:** `ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)`
 
 
-### <u>해결책</u>
+### <U>해결책</U>
 
 #### Step 1: MySQL 업그레이드 도중 에러가 발생하여서 corrupt된 것으로 의심되어서 지우고 재설치
 ```
