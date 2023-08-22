@@ -1,3 +1,4 @@
+
 # MySQL Error TroubleShooting
 
 - **Command:** `sudo mysql`
