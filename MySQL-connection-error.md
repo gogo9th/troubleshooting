@@ -2,7 +2,7 @@
 # MySQL Error Troubleshooting
 
 
-## 문제 증상
+### 문제 증상
 - **명령어:** `sudo mysql`
 - **에러메시지:** `ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)`
 
