@@ -13,7 +13,7 @@ $ sudo apt install mysql-server mysql-client
 #### Step 2: MySQL 서버가 정상적인 active 상태인지 확인
 ```
 $ sudo service mysql status
- # 
+ # 정상 active 상태
 ```
 
 #### Step 3: MySQL 클라이언트를 MySQL 서버에 접속 시도
