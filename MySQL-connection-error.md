@@ -51,7 +51,7 @@ $ sudo mysql
 # mysql_error.log의 에러 확인: [Server] Could not create unix socket lock file /var/run/mysqld/mysqld.sock.lock
 ```
 
-#### Step 8: 존재하지 않는 `/ar/run/mysql` 폴더 직접 만들어주기
+#### Step 8: 존재하지 않는 `/var/run/mysql` 폴더 직접 만들어주기
 ```
 $ sudo mkdir -p /var/run/mysqld
 $ sudo chown mysql:mysql /var/run/mysqld
