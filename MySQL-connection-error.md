@@ -9,7 +9,7 @@
 
 ### <U>해결책</U>
 
-#### Step 1: MySQL 업그레이드 도중 에러가 발생하여서 corrupt된 것으로 의심되어서 지우고 재설치
+#### <i>Step 1</i>: MySQL 업그레이드 도중 에러가 발생하여서 corrupt된 것으로 의심되어서 지우고 재설치
 ```
 $ sudo apt purge mysql-server mysql-common
 $ sudo apt install mysql-server mysql-client
