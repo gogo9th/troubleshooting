@@ -140,3 +140,71 @@ mysql> FLUSH PRIVILEGES;
 ```
 $ sudo mysql
 # 접속 성공
+```
+
+#### Step 23: 회사의 기존 MySQL 계정과 패스워드의 접속 테스트
+```
+$ sudo mysql -u <회사 계정의 기존 아이디 입력> -p
+> <회사 계정의 기존 패스워드 입력>
+# 접속 성공
+```
+
+#### Step 24: mysql 단독 데몬을 종료 후 MySQL 서비스 시작
+```
+$ sudo killall mysqld
+$ sudo service mysql start
+$ sudo service mysql status
+# MySQL 서비스 구동 성공
+```
+
+#### Step 25: `https://isensortech.co.kr` 웹서버에 `wget`으로 접속 테스트
+```
+$ rm -f index.html
+$ wget https://isensortech.co.kr
+$ vim index.html
+# 에러 메시지: Connect Error: Server sent charset unknown to the client. Please, report to the developers
+```
+
+#### Step 26: 최신 MySQL이 구식 php 버전과 호환되도록 MySQL의 기본 문자열을 구식으로 다운그레이드
+```
+$ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
+  +++ character-set-server=utf8
+  +++ collation-server=utf8_general_ci 
+# 구형버전 php v5.6.40과 호환되도록 MySQL v8.0의 character set을 강제로 downgrade하기
+$ sudo service mysql restart
+```
+
+#### Step 27: `https://isensortech.co.kr` 웹서버에 `wget`으로 접속 테스트
+```
+$ rm -f index.html
+$ wget https://isensortech.co.kr
+$ vim index.html
+# 에러 메시지: Connect Error: The server requested authentication method unknown to the client
+```
+
+#### Step 28: 최신 MySQL이 구식 php 버전과 호환되도록 MySQL의 패스워드 인증방식을 다운그레이드
+```
+$ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
+  +++ default_authentication_plugin=mysql_native_password
+# 구형버전 php v5.6.40과 호환되도록 MySQL v8.0의 character set을 강제로 downgrade하기
+$ sudo service mysql restart
+```
+
+#### Step 29: `https://isensortech.co.kr` 웹서버에 `wget`으로 접속 테스트
+```
+$ rm -f index.html
+$ wget https://isensortech.co.kr
+$ vim index.html
+# 정상 웹페이지 내용 확인
+```
+
+#### Step 30: `https://isensortech.co.kr` 웹서버에 브라우저로 접속 테스트
+브라우저로 https://isensortech.co.kr 방문하기
+# 정상 웹페이지 확인
+
+## 현재 시스템 상태
+- Ubuntu 버전 18.04에서 20.04로 업그레이드
+- MySQL 버전 5.7에서 8.0으로 업그레이드
+- Apache2 버전 v2.4.29에서 v2.4.57로 업그레이드
+- php 버전은 v5.6.40 그대로
+- 
