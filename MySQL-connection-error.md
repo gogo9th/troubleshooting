@@ -4,7 +4,7 @@
 - **명령어:** `sudo mysql`
 - **에러메시지:** `ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)`
 
-#### Step 1: MySQL이 업그레이드 도중 에러가 발생하여서 corrupt된 것으로 의심되어서 지우고 재설치
+#### Step 1: MySQL 업그레이드 도중 에러가 발생하여서 corrupt된 것으로 의심되어서 지우고 재설치
 ```
 $ sudo apt purge mysql-server mysql-common
 $ sudo apt install mysql-server mysql-client
