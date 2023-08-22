@@ -199,8 +199,8 @@ $ vim index.html
 ```
 
 #### Step 30: `https://isensortech.co.kr` 웹서버에 브라우저로 접속 테스트
-브라우저로 https://isensortech.co.kr 방문하기
-# 정상 웹페이지 확인
+- 브라우저로 https://isensortech.co.kr 방문하기
+- 정상 웹페이지 확인
 
 ## 현재 시스템 상태
 - Ubuntu 버전 18.04에서 20.04로 업그레이드
