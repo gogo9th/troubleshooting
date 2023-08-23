@@ -207,8 +207,29 @@ $ vim index.html
 - 브라우저로 https://isensortech.co.kr 방문하기
 - 정상 웹페이지 확인
 
+#### Step 31: `https://isensortech.co.kr` 웹서버에 관리자 아이디/비밀번호 로그인
+로그인 실패: `가입된 회원아이디가 아니거나 비밀번호가 틀립니다.\\n비밀번호는 대소문자를 구분합니다.`.
+
+#### Step 32: `https://isensortech.co.kr` 웹서버 로그인 실패 원인분석
+- **원인:** `test_db01` 데이터베이스에 `g5_member` 테이블의 `mb_id`, `mb_password` 필드에 웹사이트 아이디/로그인 정보가 저장되어 있으며, `mb_password` 필드의 값은 유저가 입력한 비밀번호에 MySQL의 `PASSWORD()` API 연산을 적용한 후 결과값을 저장하고 있음. 따라서 유저가 새로 로그인을 시도하면 웹서버의 파일에서 유저가 입력한 비밀번호에 대하여 `"SELECT PASSWORD('$value') AS PASS"`를 MySQL 서버를 통하여 실행한 후( `lib/common.lib.php`), 결과값을 `g5_member` 테이블에 저장된 유저의 아이디의 `mb_password` 값과 비교하여서, 일치하면 로그인을 허용하고 불일치하면 불허하는 구조로 구현되어 있음. 하지만 MySQL 8.0에서는 `PASSWORD()` API의 지원을 종료하였기 때문에 상기의 `"SELECT PASSWORD('$value') AS PASS"` 명령어 실행이 실패하게 되고, 따라서 유저의 로그인이 실패하는 상태. 
+
+- **해결책:** MySQL의 `PASSWORD($value)` API의 로직은 다음의 로직과 동일함: `CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$value')))))`. 따라서, `lib/common.lib.php` 파일의 `function sql_password($value)` 함수를 아래와 같이 수정: 
+```
+function sql_password($value)
+{
+    // mysql 4.0x 이하 버전에서는 password() 함수의 결과가 16bytes
+    // mysql 4.1x 이상 버전에서는 password() 함수의 결과가 41bytes
+    // $row = sql_fetch(" select password('$value') as pass "); # 삭제
+    $row = sql_fetch(" select CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$value'))))) AS pass"); # 추가
+    return $row['pass'];
+}
+```
+#### Step 33: `https://isensortech.co.kr` 웹서버에 관리자 아이디/비밀번호 재로그인
+로그인 성공
+
 ## 현재 시스템 상태
 - Ubuntu 버전 18.04에서 20.04로 업그레이드
 - MySQL 버전 5.7에서 8.0으로 업그레이드
 - Apache2 버전 v2.4.29에서 v2.4.57로 업그레이드
 - php 버전은 v5.6.40 그대로
+- 
