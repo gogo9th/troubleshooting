@@ -211,7 +211,7 @@ $ vim index.html
 로그인 실패: `가입된 회원아이디가 아니거나 비밀번호가 틀립니다.\\n비밀번호는 대소문자를 구분합니다.`
 
 #### Step 32: `https://isensortech.co.kr` 웹서버 로그인 실패 원인분석
-- **원인:** `test_db01` 데이터베이스에 `g5_member` 테이블의 `mb_id`, `mb_password` 필드에 웹사이트 아이디/로그인 정보가 저장되어 있으며, `mb_password` 필드의 값은 유저가 입력한 비밀번호에 MySQL의 `PASSWORD()` API 연산을 적용한 후 결과값을 저장하고 있음. 따라서 유저가 새로 로그인을 시도하면 웹서버의 파일에서 유저가 입력한 비밀번호에 대하여 `"SELECT PASSWORD('$value') AS PASS"`를 MySQL 서버를 통하여 실행한 후( `lib/common.lib.php`), 결과값을 `g5_member` 테이블에 저장된 유저의 아이디의 `mb_password` 값과 비교하여서, 일치하면 로그인을 허용하고 불일치하면 불허하는 구조로 구현되어 있음. 하지만 MySQL 8.0에서는 `PASSWORD()` API의 지원을 종료하였기 때문에 상기의 `"SELECT PASSWORD('$value') AS PASS"` 명령어 실행이 실패하게 되고, 따라서 유저의 로그인이 실패하는 상태. 
+- **원인:** `test_db01` 데이터베이스에 `g5_member` 테이블의 `mb_id`, `mb_password` 필드에 웹사이트 아이디/로그인 정보가 저장되어 있으며, `mb_password` 필드의 값은 유저가 입력한 비밀번호에 MySQL의 `PASSWORD()` API 연산을 적용한 후 결과값을 저장하고 있음. 따라서 유저가 새로 로그인을 시도하면 웹서버의 파일에서 유저가 입력한 비밀번호에 대하여 `"SELECT PASSWORD('$value') AS PASS"`를 MySQL 서버를 통하여 실행한 후( `lib/common.lib.php`), 결과값을 `g5_member` 테이블에 저장된 유저의 아이디의 `mb_password` 값과 비교하여서, 일치하면 로그인을 허용하고 불일치하면 불허하는 구조로 구현되어 있음. 하지만 MySQL 8.0에서는 `PASSWORD()` API의 지원을 종료하였으며, 그 이유는 해당 로직이 최약한 SHA1 해시함수를 사용하고, SALT를 사용하지 않는 보안의 취약성 때문. 따라서 상기의 `"SELECT PASSWORD('$value') AS PASS"` 명령어 실행이 실패하게 되고, 따라서 유저의 로그인이 실패하는 상태. 
 
 - **해결책:** MySQL의 `PASSWORD($value)` API의 로직은 다음의 로직과 동일함: `CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$value')))))`. 따라서, `lib/common.lib.php` 파일의 `function sql_password($value)` 함수를 아래와 같이 수정: 
 ```
