@@ -232,4 +232,3 @@ function sql_password($value)
 - MySQL 버전 5.7에서 8.0으로 업그레이드
 - Apache2 버전 v2.4.29에서 v2.4.57로 업그레이드
 - php 버전은 v5.6.40 그대로
-- 
